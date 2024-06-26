@@ -15,7 +15,9 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-
-Route::get('profils', [ProfilController::class, 'index']);
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::delete('profils/{id}', [ProfilController::class, 'destroy'])->where('id', '[0-9]+')->name('delete');
+});
+Route::get('profils', [ProfilController::class, 'index'])->name('index');
 
 Route::post('/login', [AuthController::class, 'login']);

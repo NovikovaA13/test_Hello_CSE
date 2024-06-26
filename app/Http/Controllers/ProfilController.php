@@ -12,7 +12,8 @@ class ProfilController extends Controller
 {
 
     /**
-     * Display a listing of the resource.
+     * Récupèration des profils
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
@@ -27,5 +28,22 @@ class ProfilController extends Controller
         return response()->json([
             'message' => $profils
         ]);
+    }
+
+    public function upload(Request $request)
+    {
+        dd($request->file('image'));
+    }
+
+    /**
+     * Suppression d'un profil
+     * @param string $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function destroy(string $id)
+    {
+        $profil = Profil::find($id);
+        $profil->delete();
+        return response()->json(null,204);
     }
 }
