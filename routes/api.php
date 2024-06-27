@@ -16,8 +16,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::middleware(['auth:sanctum'])->group(function () {
+    Route::post('profils', [ProfilController::class, 'store'])->name('create');
     Route::delete('profils/{id}', [ProfilController::class, 'destroy'])->where('id', '[0-9]+')->name('delete');
+    Route::put('profils/{id}', [ProfilController::class, 'update'])->where('id', '[0-9]+')->name('update');
 });
-Route::get('profils', [ProfilController::class, 'index'])->name('index');
+Route::get('profils', [ProfilController::class, 'index'])->name('showProfils');
 
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('/login', [AuthController::class, 'login'])->name('login');

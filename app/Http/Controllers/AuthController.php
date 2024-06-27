@@ -12,17 +12,16 @@ class AuthController
     {
         if (!Auth::attempt($request->only('email', 'password'))) {
             return response()->json([
-                'message' => 'Invalid login details'
+                'message' => 'Login ou mot de passe invalid'
             ], 401);
         }
 
        $Admin = Admin::where('email', $request['email'])->firstOrFail();
 
-        $token = $Admin->createToken('auth_token')->plainTextToken;
+       $token = $Admin->createToken('auth_token')->plainTextToken;
 
-        return response()->json([
-            'access_token' => $token,
-            'token_type' => 'Bearer',
-        ]);
+       return response()->json([
+           'access_token' => $token
+       ]);
     }
 }

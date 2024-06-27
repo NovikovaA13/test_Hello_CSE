@@ -18,10 +18,7 @@ return new class extends Migration
             $table->string('nom');
             $table->string('prenom');
             $table->string('image');
-            $table->enum('statut', [StatutEnum::ACTIF->value, StatutEnum::INATTENTE->value, StatutEnum::INACTIF->value])->default(StatutEnum::INATTENTE->value);
-
-            //$table->enum('statut', StatutEnum::cases())->default(StatutEnum::INATTENTE);
-            //$table->enum('statut', ['actif', StatutEnum::INATTENTE->value, 'inactif'])->default(StatutEnum::INATTENTE);
+            $table->enum('statut', StatutEnum::values())->default(StatutEnum::INATTENTE);
         });
     }
 

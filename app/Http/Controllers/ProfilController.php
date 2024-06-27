@@ -5,8 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\StatutEnum;
 use App\Http\Requests\ProfilRequest;
 use App\Models\Profil;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Services\ImageService;
 
 class ProfilController extends Controller
 {
@@ -25,15 +24,52 @@ class ProfilController extends Controller
         }
         $profils->makeHidden(['created_at', 'updated_at']);//On cache les champs qui nous n'interesse pas
 
-        return response()->json([
-            'message' => $profils
-        ]);
+        foreach ($profils as $profil) {
+            $profil->image = public_path('/assets/images/'.$profil->image);
+        }
+        return response()->json($profils);
     }
 
-    public function upload(Request $request)
+    /**
+     * Enregistrement d'un profil
+     * @param ProfilRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function store(ProfilRequest $request)
     {
-        dd($request->file('image'));
+        $service = new ImageService();
+        $filename = $service->uploadImage($request);
+        $profil = new Profil();
+        $profil->nom = $request->nom;
+        $profil->prenom = $request->prenom;
+        $profil->statut = $request->statut;
+        $profil->image = $filename;
+        $profil->save();
+
+        return response()->json(null,201);
     }
+
+
+    /**
+     * Modification d'un profil
+     * @param ProfilRequest $request
+     * @param string $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function update(ProfilRequest $request, string $id)
+    {
+        $service = new ImageService();
+        $filename = $service->uploadImage($request);
+
+        $profil = Profil::find($id);
+        $profil->nom = $request->nom;
+        $profil->prenom = $request->prenom;
+        $profil->statut = $request->statut;
+        $profil->image = $filename;
+        $profil->save();
+        return response()->json(null, 204);
+    }
+
 
     /**
      * Suppression d'un profil
