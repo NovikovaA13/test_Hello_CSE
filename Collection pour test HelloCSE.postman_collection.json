@@ -1,0 +1,193 @@
+{
+	"info": {
+		"_postman_id": "a7be5b1f-be9a-4e8b-8802-90c00689c8e7",
+		"name": "Collection pour test HelloCSE",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "17271582"
+	},
+	"item": [
+		{
+			"name": "http://127.0.0.1:8000/api/login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"admin@gmail.com\",\r\n    \"password\": \"password\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://127.0.0.1:8000/api/login"
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:8000/api/profils",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "1|6lEdZy6xAdClOdU06ALuqpPp0nh8B3A9Et4Q25cca2d9c31f"
+					}
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": "http://127.0.0.1:8000/api/profils"
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:8000/api/profils",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "1|6lEdZy6xAdClOdU06ALuqpPp0nh8B3A9Et4Q25cca2d9c31f"
+					}
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "image",
+							"contentType": "multipart/form-data",
+							"type": "file",
+							"src": "/C:/Users/novik/Downloads/téléchargement.jpg"
+						},
+						{
+							"key": "nom",
+							"value": "first name",
+							"contentType": "",
+							"type": "text"
+						},
+						{
+							"key": "prenom",
+							"value": "last name",
+							"type": "text"
+						},
+						{
+							"key": "statut",
+							"value": "actif",
+							"type": "text"
+						}
+					]
+				},
+				"url": "http://127.0.0.1:8000/api/profils"
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:8000/api/profils/1?_method=PUT",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "1|6lEdZy6xAdClOdU06ALuqpPp0nh8B3A9Et4Q25cca2d9c31f"
+					}
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "image",
+							"contentType": "multipart/form-data",
+							"type": "file",
+							"src": "/C:/Users/novik/Downloads/téléchargement.png"
+						},
+						{
+							"key": "nom",
+							"value": "nom",
+							"type": "text"
+						},
+						{
+							"key": "prenom",
+							"value": "New Prenom",
+							"type": "text"
+						},
+						{
+							"key": "statut",
+							"value": "inactif",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/profils/1?_method=PUT",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"profils",
+						"1"
+					],
+					"query": [
+						{
+							"key": "_method",
+							"value": "PUT"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://127.0.0.1:8000/api/profils/1",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "1|6lEdZy6xAdClOdU06ALuqpPp0nh8B3A9Et4Q25cca2d9c31f"
+					}
+				},
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": "http://127.0.0.1:8000/api/profils/1"
+			},
+			"response": []
+		}
+	]
+}

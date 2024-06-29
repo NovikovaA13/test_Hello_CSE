@@ -6,6 +6,7 @@ use App\Enums\StatutEnum;
 use App\Http\Requests\ProfilRequest;
 use App\Models\Profil;
 use App\Services\ImageService;
+use Symfony\Component\HttpFoundation\Response;
 
 class ProfilController extends Controller
 {
@@ -20,14 +21,13 @@ class ProfilController extends Controller
             $profils = Profil::all();
         } else {//Sinon afficher que les profils avec les statuts actif
             $profils = Profil::where('statut', StatutEnum::ACTIF)->get();
-            $profils->makeHidden('statut');
+            $profils->makeHidden(['id', 'statut']);//On cache les champs qui nous n'interesse que les admins
         }
-        $profils->makeHidden(['created_at', 'updated_at']);//On cache les champs qui nous n'interesse pas
 
         foreach ($profils as $profil) {
-            $profil->image = public_path('/assets/images/'.$profil->image);
+            $profil->image = (asset('assets/images/'.$profil->image));//On fait un lien absolute pour les images
         }
-        return response()->json($profils);
+        return response()->json(["message" => $profils]);
     }
 
     /**
@@ -38,15 +38,15 @@ class ProfilController extends Controller
     public function store(ProfilRequest $request)
     {
         $service = new ImageService();
-        $filename = $service->uploadImage($request);
+        $filename = $service->uploadImage($request);//On traite un image
+
         $profil = new Profil();
         $profil->nom = $request->nom;
         $profil->prenom = $request->prenom;
         $profil->statut = $request->statut;
         $profil->image = $filename;
         $profil->save();
-
-        return response()->json(null,201);
+        return response()->json(null, Response::HTTP_CREATED);
     }
 
 
@@ -59,15 +59,18 @@ class ProfilController extends Controller
     public function update(ProfilRequest $request, string $id)
     {
         $service = new ImageService();
-        $filename = $service->uploadImage($request);
+        $filename = $service->uploadImage($request);//On traite un image
 
         $profil = Profil::find($id);
+        if ($profil === null) {//si ce profil n'existe pas
+            return response()->json(["message" => "Profil avec id $id n'existe pas"], Response::HTTP_BAD_REQUEST);
+        }
         $profil->nom = $request->nom;
         $profil->prenom = $request->prenom;
         $profil->statut = $request->statut;
         $profil->image = $filename;
         $profil->save();
-        return response()->json(null, 204);
+        return response()->json(null, Response::HTTP_NO_CONTENT);
     }
 
 
@@ -79,7 +82,10 @@ class ProfilController extends Controller
     public function destroy(string $id)
     {
         $profil = Profil::find($id);
+        if ($profil === null) {//si ce profil n'existe pas
+            return response()->json(["message" => "Profil avec id $id n'existe pas"], Response::HTTP_BAD_REQUEST);
+        }
         $profil->delete();
-        return response()->json(null,204);
+        return response()->json(null, Response::HTTP_NO_CONTENT);
     }
 }

@@ -13,9 +13,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        Profil::factory(5)->create();//On crée 20 profils avec les données aléatoires
         $this->call([
-            AdminSeeder::class,
-            ProfilsSeeder::class,
+            AdminSeeder::class,//On crée un admin en utilisant Seeder
         ]);
         // \App\Models\Admin::factory(10)->create();
 
